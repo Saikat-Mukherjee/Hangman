@@ -1,0 +1,96 @@
+SDL3 SETUP INSTRUCTIONS
+=======================
+Follow these steps ONCE before running "make" for the first time.
+
+─────────────────────────────────────────────────────────────────────────
+STEP 1 — Download SDL3 development libraries (MinGW)
+─────────────────────────────────────────────────────────────────────────
+  URL: https://github.com/libsdl-org/SDL/releases/tag/release-3.4.8
+  File to download: SDL3-devel-3.4.8-mingw.zip
+
+  Inside the zip you will find:
+    x86_64-w64-mingw32/
+      include/SDL3/   <- headers
+      lib/            <- .a static libs
+      bin/SDL3.dll    <- runtime DLL
+
+  Copy:
+    x86_64-w64-mingw32/include/SDL3/  →  <project>/include/SDL3/
+    x86_64-w64-mingw32/lib/*.a        →  <project>/lib/
+    x86_64-w64-mingw32/bin/SDL3.dll   →  <project>/   (same folder as hangman.exe)
+
+─────────────────────────────────────────────────────────────────────────
+STEP 2 — Download SDL3_ttf development libraries (MinGW)
+─────────────────────────────────────────────────────────────────────────
+  URL: https://github.com/libsdl-org/SDL_ttf/releases/latest
+  File to download: SDL3_ttf-devel-X.X.X-mingw.zip
+
+  Copy:
+    x86_64-w64-mingw32/include/SDL3/SDL_ttf.h  →  <project>/include/SDL3/
+    x86_64-w64-mingw32/lib/*.a                 →  <project>/lib/
+    x86_64-w64-mingw32/bin/SDL3_ttf.dll        →  <project>/
+    (also copy any bundled freetype/zlib DLLs from bin/ if present)
+
+─────────────────────────────────────────────────────────────────────────
+STEP 3 — Download Roboto font (OFL license, free to redistribute)
+─────────────────────────────────────────────────────────────────────────
+  URL: https://fonts.google.com/specimen/Roboto
+  Click "Download family" → extract → find Roboto-Regular.ttf
+
+  Copy:
+    Roboto-Regular.ttf  →  <project>/assets/fonts/Roboto-Regular.ttf
+
+─────────────────────────────────────────────────────────────────────────
+STEP 4 — Build
+─────────────────────────────────────────────────────────────────────────
+  Open a terminal (Git Bash, MSYS2, or PowerShell with mingw32-make) in
+  the project root and run:
+
+    mingw32-make        (or: make   if your PATH includes MinGW-W64 make)
+
+  The output binary is: hangman.exe
+
+─────────────────────────────────────────────────────────────────────────
+STEP 5 — Run
+─────────────────────────────────────────────────────────────────────────
+  Double-click hangman.exe   OR   run from terminal:
+
+    ./hangman.exe
+
+  Make sure SDL2.dll and SDL2_ttf.dll are in the SAME folder as hangman.exe.
+
+─────────────────────────────────────────────────────────────────────────
+EXPECTED DIRECTORY LAYOUT AFTER SETUP
+─────────────────────────────────────────────────────────────────────────
+  Hangman/
+  ├── hangman.exe
+  ├── SDL3.dll
+  ├── SDL3_ttf.dll
+  ├── (other bundled DLLs from SDL3_ttf, e.g. libfreetype-6.dll)
+  ├── include/
+  │   └── SDL3/
+  │       ├── SDL.h
+  │       └── SDL_ttf.h   (plus all other SDL3 headers)
+  ├── lib/
+  │   ├── libSDL3.a
+  │   ├── libSDL3main.a
+  │   └── libSDL3_ttf.a
+  ├── assets/
+  │   └── fonts/
+  │       └── Roboto-Regular.ttf
+  └── data/
+      ├── scores.dat
+      └── words/
+          ├── animals.txt
+          ├── countries.txt
+          ├── tech.txt
+          └── mixed.txt
+
+─────────────────────────────────────────────────────────────────────────
+TROUBLESHOOTING
+─────────────────────────────────────────────────────────────────────────
+  "SDL3.dll not found"         → copy SDL3.dll next to hangman.exe
+  "TTF_OpenFont failed"        → check assets/fonts/Roboto-Regular.ttf exists
+  "cannot find -lSDL3"         → check lib/ contains libSDL3.a
+  "SDL.h: No such file"        → check include/SDL3/SDL.h exists
+  Blank / crash on empty word  → check data/words/*.txt are not empty
